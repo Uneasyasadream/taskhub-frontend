@@ -1,0 +1,104 @@
+# ====================================================================
+# TaskHub AI —— 企业级敏捷研发协同与智能项目管理平台
+# 配置模板 (application-example.yaml)
+#
+# 使用说明：
+# 1. 复制本文件并重命名为 application.yaml
+# 2. 根据你的本地/测试/生产环境，替换所有 ${...} 占位符或默认值
+# 3. 不要将包含真实密码/密钥的 application.yaml 提交到版本控制
+# ====================================================================
+
+spring:
+  profiles:
+    active: dev
+
+---
+# 开发环境配置
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/taskhub_ai?useUNICODE=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:your_password}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 10
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: update
+        show-sql: true
+        format_sql: true
+        jdbc:
+          batch_size: 50
+          order_inserts: true
+          order_updates: true
+    hibernate:
+      ddl-auto: update
+    logging:
+      level:
+        org.hibernate.SQL: DEBUG
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:                 # 无密码时留空
+      database: 0
+      timeout: 5000
+      lettuce:
+        pool:
+          max-active: 30
+          max-idle: 10
+          min-idle: 2
+          max-wait: -1ms
+
+server:
+  base-url: http://localhost:8080
+  port: 8080
+  servlet:
+    context-path: /
+  tomcat:
+    max-threads: 200
+    accept-count: 100
+    max-http-form-post-size: 10MB
+
+jwt:
+  secret: ${JWT_SECRET:your_base64_secret}
+  expiration: 86400000
+  refresh-expiration: 604800000
+  header: "Authorization"
+  token-prefix: "Bearer "
+
+logging:
+  level:
+    root: INFO
+    com.taskhub.ai: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  file:
+    name: logs/taskhub-ai.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+
+app:
+  super-admin-invite-code: ${ADMIN_INVITE_CODE:CHANGE_ME}
+
+file:
+  upload-dir: ./uploads/avatars
+
+deepseek:
+  api-key: ${DEEPSEEK_API_KEY:your_api_key}
+  base-url: https://api.deepseek.com/v1
