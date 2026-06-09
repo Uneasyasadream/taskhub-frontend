@@ -9,6 +9,7 @@ export interface RegisterRequest {
   nickname?: string
   phone?: string
   email?: string
+  inviteCode?: string   // 新增
 }
 
 export interface TokenResponse {

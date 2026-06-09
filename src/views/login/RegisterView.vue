@@ -15,8 +15,14 @@
         <el-form-item prop="nickname">
           <el-input v-model="form.nickname" placeholder="昵称（可选）" clearable />
         </el-form-item>
+        <!-- 新增邀请码输入框（可选） -->
+        <el-form-item prop="inviteCode">
+          <el-input v-model="form.inviteCode" placeholder="邀请码（可选，管理员邀请码）" clearable />
+        </el-form-item>
         <el-form-item>
-          <el-button type="primary" class="register-btn" :loading="loading" @click="handleRegister">注册</el-button>
+          <el-button type="primary" class="register-btn" :loading="loading" @click="handleRegister">
+            注册
+          </el-button>
         </el-form-item>
       </el-form>
       <div class="register-footer">
@@ -41,7 +47,8 @@ const loading = ref(false)
 const form = reactive({
   username: '',
   password: '',
-  nickname: ''
+  nickname: '',
+  inviteCode: ''   // 新增字段
 })
 
 const rules = {
@@ -53,6 +60,7 @@ const rules = {
     { required: true, message: '请输入密码', trigger: 'blur' },
     { min: 6, message: '密码至少6个字符', trigger: 'blur' }
   ]
+  // inviteCode 不是必填，所以不加规则
 }
 
 const handleRegister = async () => {
@@ -71,6 +79,7 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
+/* 样式保持不变 */
 .register-container {
   width: 100%;
   height: 100vh;

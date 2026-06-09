@@ -36,18 +36,18 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function register(data: RegisterRequest) {
-    try {
-      isLoading.value = true
-      error.value = null
-      await authApi.register(data)
-      return true
-    } catch (err: any) {
-      error.value = err.message || '注册失败'
-      return false
-    } finally {
-      isLoading.value = false
-    }
+  try {
+    isLoading.value = true
+    error.value = null
+    await authApi.register(data)   // data 包含 inviteCode
+    return true
+  } catch (err: any) {
+    error.value = err.message || '注册失败'
+    return false
+  } finally {
+    isLoading.value = false
   }
+}
 
   async function updateProfile(data: UserUpdateDTO) {
     try {
